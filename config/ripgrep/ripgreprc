@@ -1,0 +1,6 @@
+# Smart case.
+--smart-case
+# Search hidden files.
+--hidden
+# Ignore git files and directories.
+--glob=!.git/*
