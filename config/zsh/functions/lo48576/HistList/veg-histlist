@@ -1,0 +1,7 @@
+local cmd="$(cat ${HOME}/.local/share/zsh/histfile-veg | sk --cycle --prompt='history> ')"
+echo "$cmd"
+if [[ "${1:-}" == --run ]] ; then
+	eval "$cmd"
+fi
+
+# vim: set ft=zsh :

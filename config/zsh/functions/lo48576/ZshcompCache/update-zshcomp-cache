@@ -1,0 +1,11 @@
+typeset -r zsh_cache_dir=${XDG_CACHE_HOME:-${HOME}/.cache}/zsh
+typeset -r zsh_compdump=${1:-${zsh_cache_dir}/zcompdump}
+
+[[ -f $zsh_compdump ]] && rm -f -- $zsh_compdump
+autoload -Uz compinit
+# `-C` is for faster boot.
+# -C: skip security check (see <http://zsh.sourceforge.net/Doc/Release/Completion-System.html#index-compinit>).
+# -d: specify dumpfile path (see `man 1 zshcompsys`).
+compinit -C -d $zsh_compdump
+
+# vim: set ft=zsh :

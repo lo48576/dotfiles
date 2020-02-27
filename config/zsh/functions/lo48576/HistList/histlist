@@ -1,0 +1,7 @@
+local cmd="$(history 0 | sk --cycle --prompt='history> ' | sed -e 's/^\s*[0-9]\+\s*//')"
+echo "$cmd"
+if [[ "${1:-}" == --run ]] ; then
+	eval "$cmd"
+fi
+
+# vim: set ft=zsh :

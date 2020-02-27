@@ -1,0 +1,9 @@
+# make a directory, then cd there.
+# mkdir + cd => mcd
+if [[ $# -eq 0 ]] ; then
+	echo "usage: mcd <new directory>"
+else
+	mkdir -p -- "$1" && cd -- "$1"
+fi
+
+# vim: set ft=zsh :

@@ -1,0 +1,16 @@
+#!/bin/sh
+
+REPO_DIR="$(readlink -f "$(dirname "$0")/../..")"
+
+link_zsh_dotfile() {
+	while [ $# -ne 0 ] ; do
+		# FIXME: Check if the link target is different.
+		(
+			cd "${HOME}/.config/zsh"
+			ln -sf "$1" ".$1" || true
+		)
+		shift
+	done
+}
+
+link_zsh_dotfile zshrc zprofile

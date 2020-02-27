@@ -1,0 +1,43 @@
+# `.zprofile` will be loaded only by login shell.
+
+CONFIG_HOME=${XDG_CONFIG_HOME:-${HOME}/.config}
+
+# Load `~/.config/profile.d/*.sh`.
+() {
+	typeset -a profiles
+	profiles=( ${CONFIG_HOME}/profile.d/*.sh(N.^W,@) )
+	for file in $profiles ; do
+		source $file
+	done
+}
+
+# Run `ssh-agent` if `$SSH_AGENT_PID` is not set (i.e. `ssh-agent` is not running).
+if [[ $+commands[ssh-agent] -ne 0 && -z $SSH_AGENT_PID ]] ; then
+	echo -n "SSH "
+	eval `ssh-agent`
+fi
+
+# Change tty characters colors.
+if [[ -z $TMUX && $TERM == "linux" ]] ; then
+	# Maybe running in virtual console such as getty or agetty.
+	# Only 16 colors available, but blue characters are so dark and hard to read.
+	echo -en '\e]P0000000'
+	echo -en '\e]P1cc0000'
+	# It is also hard to distinguish #00aa00 (dark green) and #00aaaa (dark cyan).
+	echo -en '\e]P255bb00'
+	echo -en '\e]P3fcaf3e'
+	echo -en '\e]P40055ff'
+	echo -en '\e]P5aa00aa'
+	echo -en '\e]P600aaaa'
+	echo -en '\e]P7bbbbbb'
+	echo -en '\e]P8555555'
+	echo -en '\e]P9ff5555'
+	echo -en '\e]Pa55ff55'
+	echo -en '\e]Pbffff55'
+	echo -en '\e]Pc6985f4'
+	echo -en '\e]Pdff55ff'
+	echo -en '\e]Pe55ffff'
+	echo -en '\e]Pfffffff'
+fi
+
+# vim: set ft=zsh :

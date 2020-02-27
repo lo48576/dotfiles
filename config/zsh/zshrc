@@ -1,0 +1,12 @@
+# Ensure `$ZDOTDIR` is not empty.
+ZDOTDIR=${ZDOTDIR:-${XDG_CONFIG_HOME:-${HOME}/.config}/zsh}
+
+() {
+	typeset -a rcs
+	rcs=( ${ZDOTDIR}/zshrc.d/**/*.zsh(N.^W,@) )
+	for file in $rcs ; do
+		source $file
+	done
+}
+
+# vim: set ft=zsh :

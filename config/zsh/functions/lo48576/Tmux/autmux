@@ -1,0 +1,58 @@
+# Wrapper to run tmux with appropriate options set automatically.
+#
+# Create a new session or attach to a existing session.
+# options:
+#   -2: pass -2 option to tmux ("force using 256 colours")
+#   -8: pass -8 option to tmux ("force using 88 colours")
+#   (otherwise): session name (optional)
+# Attach to the session whith specified name if exist.
+# If the session with specified name exists, attach to it.
+# If not, create new session with the name.
+
+local color_opts
+local execute=0
+local session_name
+
+if [[ $TERM == *-256color ]] ; then
+	color_opts='-2'
+elif (( $+commands[tput] )) && [[ $(tput colors) == '256' ]] ; then
+	color_opts='-2'
+fi
+
+while [[ $# -ge 1 ]] ; do
+	case $1 in
+		-2)
+			color_opts=$1
+			shift
+			;;
+		--exec)
+			execute=1
+			shift
+			;;
+		*)
+			session_name=$1
+			shift
+			;;
+	esac
+done
+
+if [[ -z $session_name ]] ; then
+	if [[ $execute -eq 1 ]] ; then
+		tmux attach 2>/dev/null \
+			|| exec tmux $color_opts
+	else
+		tmux attach 2>/dev/null \
+			|| tmux $color_opts
+	fi
+else
+	# -d: detach
+	tmux $color_opts new-session -d -s $session_name || true
+	#sleep 0.2
+	if [[ $execute -eq 1 ]] ; then
+		exec tmux $color_opts attach-session -t \=$session_name
+	else
+		tmux $color_opts attach-session -t \=$session_name
+	fi
+fi
+
+# vim: set ft=zsh :

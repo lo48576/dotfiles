@@ -1,0 +1,24 @@
+# Target command name.
+typeset -r target_cmd="$1"
+# Ensure the command is executable.
+whence $target_cmd >/dev/null || return 0
+
+# Commandline to generate completion file.
+typeset -r gen_cmdline="$2"
+[[ -n $gen_cmdline ]] || return 0
+
+# Cache directory.
+typeset -r zsh_cache_dir=${XDG_CACHE_HOME:-${HOME}/.cache}/zsh
+typeset -r zsh_comp_cache_dir=${3:-${zsh_cache_dir}/zsh/functions/Completions}
+
+[[ -e $zsh_comp_cache_dir ]] || mkdir -p -- $zsh_comp_cache_dir
+typeset -r target_file="${zsh_comp_cache_dir}/_${target_cmd}"
+
+typeset -a runcmd
+# Create completion file if not exist.
+if [[ ! -e $target_file ]] ; then
+	runcmd=( ${(z)gen_cmdline} )
+	whence ${runcmd[1]} >/dev/null && $runcmd >$target_file
+fi
+
+# vim: set ft=zsh :

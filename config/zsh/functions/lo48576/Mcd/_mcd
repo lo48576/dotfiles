@@ -1,0 +1,6 @@
+#compdef mcd
+
+_mcd() {
+	_arguments -s : \
+		'1:directory:_dir_list _mkdir'
+}
