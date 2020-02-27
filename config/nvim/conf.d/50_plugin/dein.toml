@@ -1,0 +1,123 @@
+# Plugins which should be enabled by default.
+
+# Plugins manager.
+[[plugins]]
+repo = 'Shougo/dein.vim'
+
+# Color scheme.
+[[plugins]]
+repo = 'tomasr/molokai'
+hook_add = '''
+    set background=dark
+    " let &colorcolumn=join(range(81,82),",")
+    let &colorcolumn="81,82,101,102"
+    autocmd myvimrc ColorScheme * highlight Normal ctermbg=NONE guibg=NONE
+    autocmd myvimrc ColorScheme * highlight nonText ctermbg=NONE guibg=NONE
+    autocmd myvimrc ColorScheme * highlight MatchParen ctermfg=208 ctermbg=233 guifg=#FD971F guibg=#000000 gui=bold
+    autocmd myvimrc ColorScheme * highlight DiffText ctermbg=NONE cterm=bold guibg=NONE
+    autocmd myvimrc ColorScheme * highlight ColorColumn guibg=#263030
+    autocmd myvimrc VimEnter * nested colorscheme molokai
+'''
+
+## Color scheme.
+#[[plugins]]
+#repo = 'sickill/vim-monokai'
+#hook_add = '''
+#    set background=dark
+#    " let &colorcolumn=join(range(81,82),",")
+#    let &colorcolumn="81,82,101,102"
+#    autocmd myvimrc ColorScheme * highlight Normal ctermbg=NONE guibg=NONE
+#    autocmd myvimrc ColorScheme * highlight nonText ctermbg=NONE guibg=NONE
+#    "autocmd myvimrc ColorScheme * highlight MatchParen ctermfg=208 ctermbg=233 guifg=#FD971F guibg=#000000 gui=bold
+#    autocmd myvimrc ColorScheme * highlight DiffText ctermbg=NONE cterm=bold guibg=NONE
+#    autocmd myvimrc ColorScheme * highlight ColorColumn guibg=#263030
+#    autocmd myvimrc VimEnter * nested colorscheme monokai
+#'''
+
+# Statusline and tabline.
+[[plugins]]
+repo = 'itchyny/lightline.vim'
+depends = 'tpope/vim-fugitive'
+
+# EditorConfig.
+[[plugins]]
+repo = 'editorconfig/editorconfig-vim'
+hook_add = '''
+    let g:EditorConfig_exclude_patterns = ['fugitive://.*', 'scp://.*', 'sudo:.*']
+'''
+
+# Git.
+[[plugins]]
+repo = 'tpope/vim-fugitive'
+on_post_source = '''
+    " See <http://leafcage.hateblo.jp/entry/nebulavim_intro>.
+    " This is necessary only when fugitive is loaded lazily.
+    doautoall fugitive BufNewFile
+'''
+
+# Splash screen.
+[[plugins]]
+repo = 'thinca/vim-splash'
+# Default splash uses fullwidth (non-ASCII) characters.
+if = '($LANG == "ja_JP.utf8" || $LANG == "ja_JP.UTF-8") && !exists("g:GtkGuiLoaded")'
+
+# Extend text object.
+[[plugins]]
+repo = 'tpope/vim-surround'
+
+## Templates for new files.
+#[[plugins]]
+#repo = 'thinca/vim-template'
+#hook_source = '''
+#    let g:template_files = 'template/vim-template/**'
+#    let g:template_free_pattern = 'vim-template'
+#'''
+#hook_add = '''
+#    autocmd User plugin-template-loaded call s:template_keywords()
+#    function! s:template_keywords()
+#        %s/<+FILE NAME+>/\=expand('%:t')/ge
+#        %s/<+ISO8601TIME+>/\=strftime('%FT%T%z')/ge
+#        "%s/<%=\(.\{-\}\)%>/\=eval(submatch(1))/ge
+#        if search('<+CURSOR+>') | execute 'normal! "_da>"' | endif
+#    endfunction
+#'''
+
+# Context filetype library for Vim script.
+[[plugins]]
+repo = 'Shougo/context_filetype.vim'
+
+# Vim context filetype.
+[[plugins]]
+repo = 'osyo-manga/vim-precious'
+depends = 'Shougo/context_filetype.vim'
+
+# Print documents in echo area.
+[[plugins]]
+repo = 'Shougo/echodoc.vim'
+hook_add = '''
+    let g:echodoc_enable_at_startup = 1
+    set noshowmode
+'''
+
+#, Extended yank.
+[[plugins]]
+#repo = 'LeafCage/yankround.vim'
+# See <https://rcmdnk.com/blog/2018/10/01/computer-vim/>
+repo = 'rcmdnk/yankround.vim'
+#on_func = [
+#    'yankround#prev',
+#    'yankround#next',
+#    'yankround#is_active',
+#    'yankround#get_roundstatus',
+#]
+#on_map = [
+#    ['n', '<Plug>'],
+#    ['n', '"+p'],
+#    ['n', '"*p'],
+#]
+hook_add = '''
+    let g:yankround_dir = XdgCacheHome('yankround/yankround.vim')
+    let g:yankround_use_region_hl = 1
+'''
+
+# vim: set foldmethod=marker :

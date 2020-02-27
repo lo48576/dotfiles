@@ -1,0 +1,303 @@
+# Plugins which should be enabled by specific condition.
+
+# Common user interface.
+[[plugins]]
+repo = 'Shougo/denite.nvim'
+if = 'has("nvim") && has("python3")'
+on_cmd = [
+    'Denite',
+    'DeniteBufferDir',
+    'DeniteCursorWord',
+    'DeniteProjectDir',
+]
+hook_source = '''
+"nnoremap [denite] <Nop>
+"nnoremap <silent> [denite]<C-g> :<C-u>Denite grep -mode=normal<CR>
+"nnoremap <silent> [denite]<C-r> :<C-u>Denite -resume<CR>
+"nnoremap <silent> [denite]<C-n> :<C-u>Denite -resume -cursor-pos=+1 -immediately<CR>
+"nnoremap <silent> [denite]<C-p> :<C-u>Denite -resume -cursor-pos=-1 -immediately<CR>
+'''
+
+# Comment out utility.
+[[plugins]]
+repo = 'scrooloose/nerdcommenter'
+on_map = [['inx', '<Plug>NERDCommenter']]
+
+# Completion.
+[[plugins]]
+repo = 'Shougo/deoplete.nvim'
+if = 'has("nvim") && has("python3")'
+on_event = 'InsertEnter'
+on_func = [
+    'deoplete#cancel_popup',
+    'deoplete#close_popup',
+    'deoplete#manual_complete',
+    'deoplete#smart_close_popup',
+]
+hook_add = 'call lo48576#dein#deoplete#hook_add()'
+
+# Snippet.
+[[plugins]]
+repo = 'Shougo/neosnippet.vim'
+# Enable on `InsertEnter` event, to add snippet names as completion candidate.
+#on_event = 'InsertEnter'
+on_map = [['isx', '<Plug>(neosnippet_']]
+on_func = [
+    'neosnippet#expandable_or_jumpable',
+]
+hook_source = '''
+    let g:neosnippet#disable_runtime_snippets = {
+        \   '_': 1
+        \ }
+
+    let g:neosnippet#snippets_directory = []
+    let g:neosnippet#snippets_directory += [
+        \ (empty($XDG_CONFIG_HOME) ? expand('~/.config') : $XDG_CONFIG_HOME) . '/nvim/vendor/neosnippet'
+        \ ]
+'''
+#hook_source = '''
+#    "imap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+#    "    \ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+#'''
+
+# Enhance increment and decrement.
+[[plugins]]
+repo = 'nishigori/increment-activator'
+on_map = [['inxo', '<Plug>']]
+hook_source = '''
+    let g:increment_activator_filetype_candidates = {
+        \   'cpp' : [
+        \       ['public', 'protected', 'private'],
+        \       ['int8_t', 'int16_t', 'int32_t', 'int64_t'],
+        \       ['uint8_t', 'uint16_t', 'uint32_t', 'uint64_t'],
+        \       ['signed', 'unsigned'],
+        \   ],
+        \   'rust' : [
+        \       ['f32', 'f64'],
+        \       ['i8', 'i16', 'i32', 'i64'],
+        \       ['u8', 'u16', 'u32', 'u64'],
+        \   ],
+        \   '_' : [
+        \   ],
+        \ }
+'''
+
+# extended % matching for HTML, LaTeX, and many other languages http://www.vim.org/scripts/script.php?script_id=39
+[[plugins]]
+repo = 'tmhedberg/matchit'
+on_map = [['%', 'g%', '[%', ']%'], ['a', 'a%']]
+
+# Directory tree explorer.
+[[plugins]]
+repo = 'scrooloose/nerdtree'
+on_cmd = [
+    'NERDTree',
+    'NERDTreeFromBookmark',
+    'NERDTreeToggle',
+    'NERDTreeMirror',
+    'NERDTreeClose',
+    'NERDTreeFind',
+    'NERDTreeCWD',
+]
+hook_source = '''
+    silent !mkdir -p $HOME/.config/NERDTree
+    let g:NERDTreeBookmarksFile = XdgDataHome('NERDTree/Bookmarks')
+'''
+
+# Files renamer.
+[[plugins]]
+repo = 'vim-scripts/renamer.vim'
+on_cmd = 'Renamer'
+
+# Run opened files.
+[[plugins]]
+repo = 'xuhdev/SingleCompile'
+on_cmd = [
+    'SCCompile',
+    'SCCompileRun',
+    'SCCompileRunAsync',
+    'SCCompileAF',
+    'SCCompileRunAF',
+    'SCCompileRunAsyncAF',
+    'SCChooseCompiler',
+    'SCChooseInterpreter',
+    'SCIsRunningAsync',
+    'SCTerminateAsync',
+    'SCViewResult',
+    'SCViewResultAsync',
+]
+hook_source = '''
+    let g:SingleCompile_alwayscompile = 0
+'''
+hook_post_source = 'call lo48576#dein#single_compile#hook_post_source()'
+
+## ctags.
+#[[plugins]]
+#repo = 'vim-scripts/taglist.vim'
+#if = 'executable("ctags")'
+#on_cmd = 'Tlist'
+
+# PGP.
+[[plugins]]
+repo = 'jamessan/vim-gnupg'
+on_path = '\.\(gpg\|asc\|pgp\)$'
+hook_post_source = '''
+    " See <http://leafcage.hateblo.jp/entry/nebulavim_intro>.
+    doautocmd GnuPG BufReadCmd,FileReadCmd
+'''
+
+# Extends 'j' command.
+[[plugins]]
+repo = 'osyo-manga/vim-jplus'
+on_map = ['<Plug>(jplus)', '<Plug>(jplus-']
+hook_source = '''
+    let g:jplus#config = {
+        \   'cpp' : {
+        \       'right_matchstr_pattern' : '^\s*//\s*\zs.*',
+        \   },
+        \ }
+'''
+
+## Run opened files.
+#[[plugins]]
+#repo = 'thinca/vim-quickrun'
+#on_map = [['n', '<leader>r'], ['nxo', '<Plug>(quickrun)']]
+#on_cmd = 'QuickRun'
+#hook_source = '''
+#    let g:quickrun_config = {
+#        \   '_' : {
+#        \       'outputter' : 'error',
+#        \       'outputter/error/success' : 'buffer',
+#        \       'outputter/error/error' : 'quickfix',
+#        \       'outputter/buffer/split' : ':rightbelow 8sp',
+#        \       'outputter/buffer/close_on_empty' : 1,
+#        \   },
+#        \ }
+#'''
+
+# Submode.
+[[plugins]]
+repo = 'kana/vim-submode'
+on_map = [['n', '<C-w>>', '<C-w><', '<C-w>+', '<C-w>-']]
+hook_source = '''
+    call submode#enter_with('winsize', 'n', '', '<C-w>>', '<C-w>>')
+    call submode#enter_with('winsize', 'n', '', '<C-w><', '<C-w><')
+    call submode#enter_with('winsize', 'n', '', '<C-w>+', '<C-w>+')
+    call submode#enter_with('winsize', 'n', '', '<C-w>-', '<C-w>-')
+    call submode#map('winsize', 'n', '', '>', '<C-w>>')
+    call submode#map('winsize', 'n', '', '<', '<C-w><')
+    call submode#map('winsize', 'n', '', '+', '<C-w>+')
+    call submode#map('winsize', 'n', '', '-', '<C-w>-')
+'''
+
+# Binary editor.
+[[plugins]]
+repo = 'Shougo/vinarise.vim'
+on_cmd = ['Vinarise', 'VinarisePluginDump']
+hook_source = 'let g:vinarise_enable_auto_detect = 1'
+
+## Outliner.
+#[[plugins]]
+#repo = 'vim-voom/VOoM'
+#on_cmd = ['Voom', 'VoomToggle', 'Voomhelp', 'Voomexec', 'Voomlog', 'Voomgrep']
+#hook_source = '''
+#    let g:voom_ft_modes = {
+#        \   'markdown' : 'markdown',
+#        \   'tex' : 'latex',
+#        \   'asciidoc' : 'asciidoc',
+#        \ }
+#'''
+#
+## VOoM extra.
+#[[plugins]]
+#repo = 'vim-voom/VOoM_extras'
+#depends = 'vim-voom/VOoM'
+#on_source = 'VOoM'
+
+# Language server support.
+[[plugins]]
+repo = 'autozimu/LanguageClient-neovim'
+rev = 'next'
+#hook_post_update = '''
+#    if executable('sh')
+#        let cmd = 'install.sh'
+#    endif
+#    let g:dein#plugin.build = cmd
+#'''
+build = "sh install.sh"
+#if = 'executable("rls") == 1'
+on_ft = 'rust'
+## FIXME: Set full list.
+#on_func = [
+#    #'LanguageClient#Call',
+#    #'LanguageClient#Notify',
+#    #'LanguageClient#contextMenu',
+#    'LanguageClient#textDocument_hover',
+#    'LanguageClient#textDocument_definition',
+#    'LanguageClient#textDocument_typeDefinition',
+#    'LanguageClient#textDocument_implementation',
+#    'LanguageClient#textDocument_rename',
+#    #'LanguageClient#textDocument_documentSymbol',
+#    #'LanguageClient#textDocument_references',
+#    #'LanguageClient#textDocument_codeAction',
+#    #'LanguageClient#textDocument_completion',
+#    #'LanguageClient#textDocument_formatting',
+#    #'LanguageClient#textDocument_rangeFormatting',
+#    #'LanguageClient#textDocument_documentHighlight',
+#    #'LanguageClient#clearDocumentHighlight',
+#    #'LanguageClient#workspace_symbol',
+#    #'LanguageClient#workspace_applyEdit',
+#    #'LanguageClient#workspace_executeCommand',
+#    #'LanguageClient#setLoggingLevel',
+#    #'LanguageClient#setDiagnosticsList',
+#    #'LanguageClient#registerServerCommands',
+#    #'LanguageClient#registerHandlers',
+#    #'LanguageClient#serverStatus',
+#    #'LanguageClient#serverStatusMessage',
+#    #'LanguageClient#statusLine',
+#    #'LanguageClient#cquery_base',
+#    #'LanguageClient#cquery_caller',
+#    #'LanguageClient#cquery_vars',
+#    #'LanguageClient#java_classFileContent',
+#    #'LanguageClient#explainErrorAtPoint',
+#    #'LanguageClient#debugInfo',
+#]
+hook_source = '''
+    let g:LanguageClient_serverCommands = {
+        \   'rust': ['rls'],
+        \ }
+        "\   'rust': ['rls', '+nightly'],
+    " Automatically start language servers.
+    let g:LanguageClient_autoStart = 1
+    " Never use preview window.
+    let g:LanguageClient_hoverPreview = "Never"
+
+    augroup LanguageClient_config
+        autocmd!
+        autocmd User LanguageClientStarted setlocal signcolumn=yes
+        autocmd User LanguageClientStopped setlocal signcolumn=auto
+    augroup END
+
+'''
+hook_post_source = '''
+    call dein#remote_plugins()
+'''
+
+## Open file as root.
+#[[plugins]]
+#repo = 'vim-scripts/sudo.vim'
+#on_path = 'sudo:*'
+
+# Adds 'end's automatically in some languages.
+[[plugins]]
+repo = 'tpope/vim-endwise'
+on_event = 'InsertEnter'
+
+# Insert several candidates with a single key.
+[[plugins]]
+repo = 'kana/vim-smartchr'
+on_func = ['smartchr#one_of', 'smartchr#loop']
+
+# }}}1
+
+# vim: set foldmethod=marker :

@@ -1,0 +1,9 @@
+snippet sh-shebang-current-dir
+abbr sh-shebang
+alias sh
+    #!/bin/sh
+    set -eu
+
+    cd "$(dirname "$(readlink -f "\$0")")"
+
+    ${0}

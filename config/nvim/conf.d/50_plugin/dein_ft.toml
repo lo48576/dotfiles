@@ -1,0 +1,204 @@
+# Plugins which should be enabled for specific filetypes.
+
+# Generic {{{1
+
+## Color preview.
+#[[plugins]]
+#repo = 'gorodinskiy/vim-coloresque'
+#on_ft = [
+#    # Supported.
+#    'css', 'html', 'less', 'sass', 'scss', 'stylus', 'vim',
+#    # Additional.
+#    'html5',
+#]
+
+# Color preview.
+[[plugins]]
+repo = 'lilydjwg/colorizer'
+on_ft = [
+    # HTML-like document.
+    'html',
+    'html5',
+    'xhtml',
+    # Stylesheet language.
+    'css',
+    'sass',
+    'scss',
+    'stylus',
+]
+on_map = [['n', '<Plug>Colorizer']]
+hook_source = '''
+    " Prevent heavy work for large files.
+    let g:colorizer_maxlines = 1000
+    " Disable default mapping.
+    let g:colorizer_nomap = 1
+'''
+
+# Emmet.
+[[plugins]]
+repo = 'mattn/emmet-vim'
+on_ft = [
+    # HTML-like.
+    'html',
+    'html5',
+    'xhtml',
+    # HTML-like template.
+    'eruby',
+    'html.handlebars',
+    'htmldjango',
+    'jsp',
+    # CSS-like.
+    'css',
+    'sass',
+    'scss',
+    # JS-like.
+    'coffee',
+    # Other template.
+    'haml',
+    'jinja',
+    'liquid',
+    'mason',
+    # Other document.
+    'markdown',
+    # XML.
+    'rng',
+    'xml',
+    'xslt',
+]
+on_cmd = ['Emmet', 'EmmetInstall']
+on_map = [['iv', '<Plug>(emmet-']]
+hook_source = '''
+    "let s:user_emmet_settings_file = fnamemodify(expand('<sfile>'), ':h') . '/user-emmet-settings.json'
+
+    "let g:user_emmet_settings = json_decode(join(readfile(s:user_emmet_settings_file)))
+    let g:user_emmet_settings = json_decode(join(readfile(XdgConfigHome('nvim/vendor/emmet/user-emmet-settings.json'))))
+
+    " See [Update image size in XHTML · Issue #161 · mattn/emmet-vim](https://github.com/mattn/emmet-vim/issues/161)
+    let g:emmet_html5 = 0
+
+    " Enable just for html/css/scss and some other types.
+    let g:user_emmet_install_global = 0
+    autocmd myvimrc FileType html,html5,xhtml EmmetInstall
+    autocmd myvimrc FileType eruby,html.handlebars,htmldjango,jsp EmmetInstall
+    autocmd myvimrc FileType css,sass,scss EmmetInstall
+    autocmd myvimrc FileType coffee EmmetInstall
+    autocmd myvimrc FileType haml EmmetInstall
+    autocmd myvimrc FileType jinja EmmetInstall
+    autocmd myvimrc FileType liquid EmmetInstall
+    autocmd myvimrc FileType mason EmmetInstall
+    autocmd myvimrc FileType markdown EmmetInstall
+    autocmd myvimrc FileType rng EmmetInstall
+    autocmd myvimrc FileType xml EmmetInstall
+    autocmd myvimrc FileType xslt EmmetInstall
+'''
+
+# Syntax and highlighting {{{1
+
+## JSON.
+## 2018-09-26: Syntax highlighting not working for molokai and monokai colorscheme.
+#[[plugins]]
+#repo = 'elzr/vim-json'
+#on_ft = ['json']
+#hook_source = '''
+#    " Disable conceal.
+#    let g:vim_json_syntax_conceal = 0
+#'''
+
+# LaTeX.
+[[plugins]]
+repo = 'vim-latex/vim-latex'
+on_ft = ['tex', 'plaintex']
+on_map = [
+    '<Plug>IMAP_JumpForward',
+    '<Plug>IMAP_JumpBack',
+    '<Plug>IMAP_DeleteAndJumpForward',
+    '<Plug>IMAP_DeleteAndJumpBack',
+]
+hook_add = '''
+    " Disable conceal.
+    let g:tex_conceal = ''
+
+    " OPTIONAL: Starting with Vim 7, the filetype of empty .tex files defaults to
+    " 'plaintex' instead of 'tex', which results in vim-latex not being loaded.
+    " The following changes the default filetype back to 'tex':
+    let g:tex_flavor='latex'
+'''
+hook_source = '''
+    "let g:Imap_UsePlaceHolders = 0
+    let g:Imap_DeleteEmptyPlaceHolders = 1
+    let g:Imap_StickyPlaceHolders = 0
+    " default target (select 'pdf' if you use Japanese)
+    " xvdi can't display Japanese Character but you can look it in pdf
+    let g:Tex_DefaultTargetFormat='pdf'
+    let g:Tex_FormatDependency_ps = 'dvi,ps'
+    let g:Tex_CompileRule_pdf='lualatex -shell-escape $*' "direct pdf
+    let g:Tex_CompileRule_ps = 'dvips -Ppdf -o $*.ps $*.dvi'
+    "let g:Tex_CompileRule_dvi = 'uplatex -synctex=1 -interaction=nonstopmode -file-line-error-style $*'
+    let g:Tex_CompileRule_dvi = 'uplatex -interaction=nonstopmode -file-line-error-style $*'
+    let g:Tex_BibtexFlavor = 'upbibtex'
+    let g:Tex_MakeIndexFlavor = 'makeindex $*.idx'
+    let g:Tex_UseEditorSettingInDVIViewer = 1
+    let g:Tex_ViewRule_pdf = 'xdg-open'
+    "let g:Tex_ViewRule_pdf = 'evince'
+
+    let g:Tex_AutoFolding = 0
+    let g:Tex_SmartKeyQuote = 0
+    let g:Imap_FreezeImap = 1
+'''
+
+# TOML.
+[[plugins]]
+repo = 'cespare/vim-toml'
+on_ft = 'toml'
+
+## Vim configuration for Rust.
+[[plugins]]
+repo = 'rust-lang/rust.vim'
+on_ft = 'rust'
+on_cmd = ['RustFmt']
+hook_source = '''
+    autocmd FileType rust nmap <buffer> <silent> <leader>f :RustFmt<CR>
+'''
+
+# GLSL.
+[[plugins]]
+repo = 'tikhomirov/vim-glsl'
+on_ft = 'glsl'
+
+# Slim.
+[[plugins]]
+repo = 'slim-template/vim-slim'
+on_ft = 'slim'
+
+# AsciiDoc.
+[[plugins]]
+repo = 'habamax/vim-asciidoctor'
+on_ft = 'asciidoc'
+hook_add = '''
+    let g:asciidoctor_fenced_languages = ['c', 'cpp', 'python', 'ruby', 'rust']
+'''
+
+# Gentoo.
+[[plugins]]
+repo = 'gentoo/gentoo-syntax'
+on_ft = [
+    'ebuild',
+    'gentoo-changelog',
+    'gentoo-conf-d',
+    'gentoo-init-d',
+    'gentoo-make-conf',
+    'gentoo-metadata',
+    'gentoo-mirror',
+    'gentoo-package-keywords',
+    'gentoo-package-license',
+    'gentoo-package-mask',
+    'gentoo-package-properties',
+    'gentoo-package-use',
+    'gentoo-use-desc',
+    'glep',
+    'guidexml',
+]
+
+# }}}1
+
+# vim: set foldmethod=marker :

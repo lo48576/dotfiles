@@ -1,0 +1,39 @@
+{
+	"variables": {
+		"lang": "ja"
+	},
+	"xhtml": {
+		"filters": "html",
+		"empty_element_suffix": " />"
+	},
+	"xml": {
+		"extends": "html",
+		"__extends": "",
+		"default_attributes": {},
+		"block_elements": "",
+		"inline_elements": "",
+		"empty_elements": "",
+		"expandos": {},
+		"aliases": {},
+		"empty_element_suffix": " />"
+	},
+	"rng": {
+		"filters": "xml",
+		"default_attributes": {
+			"data": {"type": ""},
+			"define": {"name": ""},
+			"externalRef": {"href": ""},
+			"include": {"href": ""},
+			"param": {"name": ""},
+			"parentRef": {"name": ""},
+			"ref": {"name": ""}
+		},
+		"aliases": {
+			"att": "attribute",
+			"attr": "attribute",
+			"elem": "element"
+		},
+		"empty_elements": "data,empty,exteralRef,name,notAllowed,parentRef,ref,text",
+		"inline_elements": "name,param,value"
+	}
+}
