@@ -1,0 +1,6 @@
+#command
+h left-scroll
+l right-scroll
+#line-edit
+#env
+LESSHISTFILE = /dev/null

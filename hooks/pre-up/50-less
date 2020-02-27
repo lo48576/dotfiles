@@ -1,0 +1,6 @@
+#!/bin/sh
+set -eu
+
+REPO_DIR="$(readlink -f "$(dirname "$0")/../..")"
+LESS_DIR="${REPO_DIR}/config/less"
+lesskey -o "${LESS_DIR}/lesskey" "${LESS_DIR}/lesskey-src"
